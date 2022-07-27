@@ -3,13 +3,16 @@ from functions import *
 from streamlit_folium import folium_static 
 import folium
 from datetime import timedelta
+import plotly.graph_objects as go
+import plotly.express as px
+
 
 st.set_page_config(page_title="Indv Report")
 st.markdown("# Fake visits report")
 st.write(
     """In this page you can see the amount of red and yellow flags that a rep have.
-        - A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 820ft and less than 1640m
-        - A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  1640m
+- A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 820ft and less than 1640m
+- A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  1640m
 """)
 
 # Upload the data
@@ -22,7 +25,27 @@ if rep !='':
 
     # We filter the dataframe to get only the rep data and group by date to know the yellow and red flags of each day
     rep_data = data[data['name']==rep]
-    st.dataframe(rep_data.groupby('offer_date').sum()[['Yellow flag','Red flag']].sort_index())
+
+    dates_info = rep_data.groupby('offer_date').sum()[['Yellow flag','Red flag']].sort_index().reset_index()
+    
+    fig = px.line(        
+        dates_info, #Data Frame
+        x = "offer_date", #Columns from the data frame
+        y = "Yellow flag",
+        title = "Yellow flags"
+    )
+    fig.update_traces(line_color = "blue")
+    st.plotly_chart(fig)
+
+    fig = px.line(        
+        dates_info, #Data Frame
+        x = "offer_date", #Columns from the data frame
+        y = "Red flag",
+        title = "Red flags"
+    )
+    fig.update_traces(line_color = "red")
+    st.plotly_chart(fig)
+
 
     # We include a date filter in the sidebar to see the information of the visits of that day (Table and Map)
     dates=st.sidebar.date_input("Visit range",[],min_value=rep_data['offer_date'].min(),max_value=rep_data['offer_date'].max())
