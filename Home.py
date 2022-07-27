@@ -11,7 +11,6 @@ def run():
 
     st.write("# Home")
 
-    st.sidebar.success("Select a demo above.")
 
 
 
