@@ -11,8 +11,8 @@ st.set_page_config(page_title="Indv Report")
 st.markdown("# Fake visits report")
 st.write(
     """In this page you can see the amount of red and yellow flags that a rep have.
-- A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 724ft and less than 2000m
-- A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  2000m
+- A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 724ft and less than 2000ft
+- A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  1640ft
 """)
 
 # Upload the data
