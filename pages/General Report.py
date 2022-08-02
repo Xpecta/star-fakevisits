@@ -7,8 +7,8 @@ st.set_page_config(page_title="Gen Report")
 st.markdown("# Fake visits report")
 st.write(
     """In this page you can see the amount of red and yellow flags that a rep have.
-- A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 820ft and less than 1640ft
-- A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  1640ft
+- A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 724ft and less than 2000ft
+- A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  2000ft
 """)
 
 # Upload the data 
@@ -20,7 +20,7 @@ data = uploading_data()
 dates=st.sidebar.date_input("Date Filter",[],min_value=data['offer_date'].min(),max_value=data['offer_date'].max())
 
 if len(dates)==2:
-    data = data[(data['offer_date'] >= dates[0]) & (data['offer_date'] <= dates[1])]
+    data = data[(data['date'] >= dates[0]) & (data['date'] <= dates[1])]
 
 # We group by rep name to see the total numbers of yellow and red flags
 graficas = data.groupby('name').sum()[['Yellow flag','Red flag']].sort_values('Red flag',ascending=False)
