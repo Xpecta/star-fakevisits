@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit.logger import get_logger
+from functions import *
 
 LOGGER = get_logger(__name__)
 
@@ -10,8 +11,6 @@ def run():
     )
 
     st.write("# Home")
-
-
 
 
 if __name__ == "__main__":
