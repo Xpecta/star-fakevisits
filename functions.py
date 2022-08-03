@@ -75,8 +75,8 @@ def uploading_data():
     consolidado['acc_route_dist']=(consolidado[['acc_coords','coords']].apply(lambda x : distance_rows(x[0],x[1]),axis=1))
 
 
-    consolidado['Yellow flag'] =  consolidado['acc_route_dist'].apply(lambda x: 1 if (x>724 and x<2000)  else 0)
-    consolidado['Red flag'] = consolidado['acc_route_dist'].apply(lambda x: 1 if x>2000 else 0)
+    consolidado['Yellow flag'] =  consolidado['acc_route_dist'].apply(lambda x: 1 if (x>2296 and x<4900)  else 0)
+    consolidado['Red flag'] = consolidado['acc_route_dist'].apply(lambda x: 1 if x>5000 else 0)
     consolidado['date'] = pd.to_datetime(consolidado['date']).dt.date
 
 
