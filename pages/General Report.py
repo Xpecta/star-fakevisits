@@ -1,7 +1,7 @@
 import streamlit as st
 from functions import *
 import matplotlib.pyplot as plt
-
+import plotly.express as px
 
 st.set_page_config(page_title="Gen Report")
 st.markdown("# Fake visits report")
@@ -28,12 +28,21 @@ st.dataframe(graficas)
 
 # We plot the red flags by rep
 st.write("## Top red flags ")
-fig, ax = plt.subplots()
-plt.barh(graficas.sort_values('Red flag').index,graficas['Red flag'].sort_values())
-st.pyplot(fig)
+
+fig =px.bar(        
+                graficas.sort_values('Red flag').reset_index(), #Data Frame
+                x = "Red flag", #Columns from the data frame
+                y = "name",
+            )
+fig.update_yaxes(automargin=True,dtick=1)
+st.plotly_chart(fig)
 
 # We plot the yellow flags by rep
 st.write("## Top yellow flags ")
-fig, ax = plt.subplots()
-plt.barh(graficas.sort_values('Yellow flag').index,graficas['Yellow flag'].sort_values())
-st.pyplot(fig)
+fig =px.bar(        
+                graficas.sort_values('Yellow flag').reset_index(), #Data Frame
+                x = "Yellow flag", #Columns from the data frame
+                y = "name",
+            )
+fig.update_yaxes(automargin=True,dtick=1)
+st.plotly_chart(fig)
