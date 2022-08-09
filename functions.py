@@ -79,5 +79,12 @@ def uploading_data():
     consolidado['Red flag'] = consolidado['acc_route_dist'].apply(lambda x: 1 if x>5000 else 0)
     consolidado['date'] = pd.to_datetime(consolidado['date']).dt.date
 
+    consolidado['buy']=(consolidado['status']=='Accepted').astype(int)
+    consolidado['visit']=1
 
+    consolidado['cum_prevbuys'] = consolidado.groupby(['account_id'])['buy'].apply(lambda x: x.shift().cumsum())
+    consolidado['cum_prevvisits'] = consolidado.groupby(['account_id'])['visit'].apply(lambda x: x.shift().cumsum())
+
+    consolidado['cum_prevvisits'] = consolidado['cum_prevvisits'].fillna(0)
+    consolidado['cum_prevbuys'] = consolidado['cum_prevbuys'].fillna(0)
     return consolidado
