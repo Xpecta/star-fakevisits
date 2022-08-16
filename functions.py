@@ -3,7 +3,8 @@ from google.oauth2 import service_account
 import pandas as pd
 import streamlit as st
 from haversine import haversine, Unit
-import ast 
+import ast
+import base64
 
 # The Big Query Credentials are in the path .streamlit/secrets.toml 
 # First we save this credentials in the variable credentials and then we create the connection with bigquery
@@ -19,7 +20,7 @@ LEFT JOIN `star-big-data.star_us_rds.places` p ON a.place_id=p.id
 """
 # The ofertas query acces the locations of the accounts and the location of the rep when the visit was registered.
 ofertas_q="""
-SELECT o.id,CAST(o.offer_date as DATE) as date,o.offer_date,o.account_id,a.practice_name,r.name,o.longitude as visit_lon,o.latitude as visit_lat,p.longitude as acc_lon,p.latitude as acc_lat,p.state,p.city,o.status,o.total_offer
+SELECT o.id,CAST(o.offer_date as DATE) as date,CAST(o.offer_date as time) as time,o.offer_date,o.account_id,a.practice_name,r.name,o.longitude as visit_lon,o.latitude as visit_lat,p.longitude as acc_lon,p.latitude as acc_lat,p.state,p.city,o.status,o.total_offer
 FROM `star-big-data.star_us_rds.offers` o
 LEFT JOIN `star-big-data.star_us_rds.accounts` a ON o.account_id=a.id
 LEFT JOIN `star-big-data.star_us_rds.places` p ON a.place_id=p.id
@@ -88,3 +89,55 @@ def uploading_data():
     consolidado['cum_prevvisits'] = consolidado['cum_prevvisits'].fillna(0)
     consolidado['cum_prevbuys'] = consolidado['cum_prevbuys'].fillna(0)
     return consolidado
+
+@st.cache(allow_output_mutation=True)
+def get_base64_of_bin_file(png_file):
+    with open(png_file, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+def build_markup_for_logo(
+    png_file,
+    background_position="50% 10%",
+    margin_top="10%",
+    image_width="60%",
+    image_height="",
+):
+    binary_string = get_base64_of_bin_file(png_file)
+    return """
+            <style>
+                [data-testid="stSidebarNav"] {
+                    background-image: url("data:image/png;base64,%s");
+                    background-repeat: no-repeat;
+                    background-position: %s;
+                    margin-top: %s;
+                    background-size: %s %s;
+                }
+                [data-testid="stSidebarNav"]::before {
+                content: "Fake Visits Report";
+                margin-left: 20px;
+                margin-top: 20px;
+                font-size: 35px;
+                position: relative;
+                top: 100px;
+            }
+            </style>
+            """ % (
+        binary_string,
+        background_position,
+        margin_top,
+        image_width,
+        image_height,
+    )
+
+
+def add_logo(png_file):
+    logo_markup = build_markup_for_logo(png_file)
+    st.markdown(
+        logo_markup,
+        unsafe_allow_html=True,
+    )
+
+def color_tabla(df):
+    x = int(df['Distance'].split(' ')[0])
+    return ['background-color: orange; color: white']*len(df) if (x>2296 and x<4900) else (['background-color: red; color: white']*len(df) if x>4900 else ['background-color: white']*len(df))
