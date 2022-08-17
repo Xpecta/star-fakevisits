@@ -79,13 +79,13 @@ if rep !='':
                     mapit = folium.Map( location=latlon[0], zoom_start=6 ,tiles='Stamen Toner')
 
                     for coord in latlon:
-                        folium.Circle( location=[ coord[0], coord[1] ], color='#43d9de', radius=10 ).add_to( mapit )
+                        folium.Marker( location=[ coord[0], coord[1] ], icon = folium.Icon(color='blue',icon='car',prefix='fa') ).add_to( mapit )
                     
                     for i in range(len(temp_data)):
 
                         # The account location dot is added in blue
                         prac_name=temp_data.iloc[i]['practice_name']
-                        html = f"{prac_name}'s Location"
+                        html = f"({temp_data.iloc[i]['time']}) {prac_name}'s Location "
                         iframe = folium.IFrame(html)
                         popup = folium.Popup(iframe,min_width=180,max_width=190)
 
@@ -96,8 +96,8 @@ if rep !='':
                         elif yellow_flag==1:
                             color='orange'
                         else:
-                            color='blue'
-                        folium.Circle(location=[temp_data.iloc[i]['acc_lat'], temp_data.iloc[i]['acc_lon']],popup=popup,radius=10,fill=True,color=color,fill_opacity=1).add_to(mapit)
+                            color='green'
+                        folium.Marker(location=[temp_data.iloc[i]['acc_lat'], temp_data.iloc[i]['acc_lon']],popup=popup,icon = folium.Icon(color=color,icon='building',prefix='fa')).add_to(mapit)
 
                     mapit.fit_bounds(mapit.get_bounds())
                     folium_static(mapit)
