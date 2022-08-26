@@ -51,7 +51,7 @@ def distance_rows(start, points):
     """
     return min([haversine(start,stop,unit=Unit.FEET) for stop in points])
 
-@st.experimental_memo
+@st.cache(ttl=14400)
 def uploading_data():
     """Function that uploads and transforms the data
 
