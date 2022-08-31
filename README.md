@@ -27,6 +27,18 @@ The data used in this app is from Star's BigQuery Database. The following tables
 - star-big-data.star_us_rds.places
 - star-big-data.star_us_rds.reps
 
+**How to make a connection to the database?**
+
+There are two ways to connect to the database in BigQuery. In both ways you need the key provided from SDR (the key name is key.json). The two ways are:
+
+1. Using BigQuery Client.
+
+To use this way, follow the instructions detalied in [google documentation](https://cloud.google.com/bigquery/docs/reference/libraries?hl=es_419)
+
+2. Using Streamlit 
+
+To use this way, follow the instructions detalied in [streamlit documentation](https://docs.streamlit.io/knowledge-base/tutorials/databases/bigquery)
+
 ## Algorithm procedure
 
 The algorithm recognizes when a visit is registered in a location far from the account location. 
