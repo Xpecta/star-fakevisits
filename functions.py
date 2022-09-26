@@ -5,6 +5,7 @@ import streamlit as st
 from haversine import haversine, Unit
 import ast
 import base64
+import pdb
 
 # The Big Query Credentials are in the path .streamlit/secrets.toml 
 # First we save this credentials in the variable credentials and then we create the connection with bigquery
@@ -49,7 +50,8 @@ def distance_rows(start, points):
     Returns:
         float: minimum distance in feet
     """
-    return min([haversine(start,stop,unit=Unit.FEET) for stop in points])
+
+    return min([haversine(start,stop,unit=Unit.FEET) for stop in points if len(stop)>1])
 
 @st.cache(ttl=14400)
 def uploading_data():
@@ -58,8 +60,6 @@ def uploading_data():
     Returns:
         Dataframe: Dataframe with all the nedeed data
     """
-
-
     # First we load the route that reps followed each day and trasnform the set of coordinates into a list
     coordinates=(BigQuery_client.query(tracks).result().to_dataframe(create_bqstorage_client=True,))
     coordinates = coordinates.dropna()
@@ -74,7 +74,6 @@ def uploading_data():
     # We join offers dataframe with the track information to have the route followed for the rep the day that he visited the account. This distance is in acc_route_dist
     consolidado=ofertas.merge(coordinates,how='left',on=['date','name']).dropna()
     consolidado['acc_route_dist']=(consolidado[['acc_coords','coords']].apply(lambda x : distance_rows(x[0],x[1]),axis=1))
-
 
     consolidado['Yellow flag'] =  consolidado['acc_route_dist'].apply(lambda x: 1 if (x>2296 and x<4900)  else 0)
     consolidado['Red flag'] = consolidado['acc_route_dist'].apply(lambda x: 1 if x>5000 else 0)

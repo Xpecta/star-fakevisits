@@ -12,14 +12,13 @@ add_logo('Imagenes/starlogo.png')
 
 st.markdown("# General report")
 st.write(
-    """In this page you can see the amount of red and yellow flags that a rep have.
-- A rep get a yellow flag if the visit location doesnt match with the account location by a ratio of more than 2296ft and less than 4900ft
-- A rep get a red flag if the visit location doesnt match with the account location by a ratio of more than  4900ft
+    """In this page you can see the amount of red and yellow flags that a rep has.
+- A rep gets a yellow flag if the visit location doesn't match with the account location by a ratio of more than 2296ft and less than 4900ft
+- A rep gets a red flag if the visit location doesn't match with the account location by a ratio of more than 4900ft
 """)
 
 # Upload the data 
 data = uploading_data()
-
 
 # Sidebar filters 
 # If the user selects a range of dates, we filter the dataframe

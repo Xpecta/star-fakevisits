@@ -7,12 +7,11 @@ st.set_page_config(page_title="Visit info",page_icon="🔮")
 add_logo('Imagenes/starlogo.png')
 st.markdown("# Visits Analysis")
 st.write("In this page you can see if a rep is visiting an account too much.")
-st.write("¿ What number of visits is considered as 'too much'?")
-st.write("According to the data, 90\% of accounts have been visited less than 5 times. So an account visited more than 5 times with no buy is 'too much'")
+st.write("¿What number of visits is considered as 'too much'?")
+st.write("According to the data, 90\% of accounts have been visited less than 5 times. So an account visited more than 5 times with no buy is considered 'too much'")
 
 # Upload the data
 data = uploading_data()
-
 
 # We add a rep filter and add a empty option. The plots and information will only display if one name is selected
 rep = st.sidebar.selectbox('Select one Rep',['']+sorted([str(x) for x in data['name'].unique()]))

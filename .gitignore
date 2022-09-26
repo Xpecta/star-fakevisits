@@ -4,3 +4,8 @@
 .streamlit/
 lib/streamlit/static
 streamlit-storage
+
+__pycache__/
+__pycache__/functions.cpython-38.pyc
+__pycache__/functions.cpython-39.pyc
+.DS_Store
