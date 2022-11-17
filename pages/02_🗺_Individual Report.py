@@ -117,7 +117,7 @@ if rep !='':
                     }).sort_values('Time')
                     temp_data['Offer']=temp_data['Offer'].astype(int).astype(str)+' USD'
                     temp_data['Distance']=temp_data['Distance'].astype(int).astype(str)+' ft     '
-                    temp_data['Time'] = temp_data['Time'].apply(lambda x: (dt.datetime.combine(dt.date(1,1,1),x)-timedelta(hours=5)).time())
+                    temp_data['Time'] = temp_data['Time'].apply(lambda x:(dt.datetime.combine(dt.date(2,1,1),x)-timedelta(hours=5)).time())
                     st.dataframe(temp_data.style.apply(color_tabla,axis=1))
                 else:
                     st.warning("There are no visits this day")
